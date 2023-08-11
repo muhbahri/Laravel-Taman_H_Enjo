@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+
+Route::get('/redirect', [HomeController::class, 'redirect']);
+Route::get('/produk', [HomeController::class, 'produk']);
+Route::get('/user/logout', [HomeController::class, 'logout'])->name('user.logout');
+
+Route::get('/view_catagory', [AdminController::class, 'view_catagory']);
+Route::post('/add_catagory', [AdminController::class, 'add_catagory']);
+Route::get('/delete_catagory/{id}', [AdminController::class, 'delete_catagory']);
+
+Route::get('view_product', [AdminController::class, 'view_product']);
+Route::post('add_product', [AdminController::class, 'add_product']);
+Route::get('show_product', [AdminController::class, 'show_product']);
+Route::get('/update_product/{id}', [AdminController::class, 'update_product']);
+Route::post('/update_product_confirm/{id}', [AdminController::class, 'update_product_confirm']);
+Route::get('/order', [AdminController::class, 'order']);
+Route::get('/delivered/{id}', [AdminController::class, 'delivered']);
+Route::get('/print_pdf/{id}', [AdminController::class, 'print_pdf']);
+Route::get('/search', [AdminController::class, 'searchdata']);
+Route::resource('products', AdminController::class);
+
+Route::get('/product_details/{id}', [HomeController::class, 'product_details']);
+Route::post('/add_cart/{id}', [HomeController::class, 'add_cart']);
+Route::get('/show_cart', [HomeController::class, 'show_cart']);
+Route::get('/show_order', [HomeController::class, 'show_order']);
+Route::get('/remove_cart/{id}', [HomeController::class, 'remove_cart']);
+Route::get('/cancel_order/{id}', [HomeController::class, 'cancel_order']);
+Route::get('/product_search', [HomeController::class, 'product_search']);
+Route::get('/produk_search', [HomeController::class, 'produk_search']);
+Route::get('/products', [HomeController::class, 'products']);
+
+Route::get('/cash_order', [HomeController::class, 'cash_order']);
+ 
